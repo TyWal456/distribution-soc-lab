@@ -1,0 +1,46 @@
+{
+    "QueryExecution": {
+        "QueryExecutionId": "a88756ba-6617-4684-b9a0-75c854b63c8e",
+        "Query": "-- Portable subset shared by SQLite and Athena engine v3.\n-- Whole-second UTC epoch fields avoid dialect-specific timestamp arithmetic.\n-- This is a batch lab query, not a scheduled production detection.\nWITH candidates AS (\n    SELECT 'SOC-001' AS rule_id, e.event_id, '' AS related_event_id,\n           'PowerShell with an encoded-command flag; inspect content and context' AS reason\n    FROM events e\n    WHERE e.event_type = 'process'\n      AND LOWER(e.process_name) IN ('powershell.exe', 'pwsh.exe')\n      AND (LOWER(e.command_line) LIKE '% -encodedcommand %'\n           OR LOWER(e.command_line) LIKE '% -enc %')\n    UNION ALL\n    SELECT 'SOC-002', e.event_id, '',\n           'Allowed external transfer of at least 5000000 bytes in one event; validate destination and purpose'\n    FROM events e\n    WHERE e.event_type = 'network' AND e.dest_zone = 'external'\n      AND e.action = 'allowed' AND e.bytes_sent >= 5000000\n    UNION ALL\n    SELECT 'SOC-003', n.event_id, p.event_id,\n           'Restricted OT network attempt within 10 minutes of encoded PowerShell on the same host and user'\n    FROM events n JOIN events p\n      ON n.host = p.host AND n.username = p.username\n     AND n.event_epoch - p.event_epoch BETWEEN 0 AND 600\n    WHERE n.event_type = 'network' AND n.dest_zone = 'restricted_ot'\n      AND p.event_type = 'process'\n      AND LOWER(p.process_name) IN ('powershell.exe', 'pwsh.exe')\n      AND (LOWER(p.command_line) LIKE '% -encodedcommand %'\n           OR LOWER(p.command_line) LIKE '% -enc %')\n), approved_events AS (\n    SELECT e.event_id, MIN(ch.change_id) AS change_id\n    FROM events e JOIN changes ch\n      ON ch.host = e.host AND ch.username = e.username\n     AND e.event_epoch BETWEEN ch.start_epoch AND ch.end_epoch\n     AND ch.event_type = e.event_type AND ch.process_name = e.process_name\n     AND ch.command_line = e.command_line AND ch.dest_ip = e.dest_ip\n     AND ch.dest_zone = e.dest_zone AND ch.dest_port = e.dest_port\n     AND ch.action = e.action\n    GROUP BY e.event_id\n), matched AS (\n    SELECT c.rule_id, c.event_id, c.related_event_id, c.reason,\n           e.event_time, e.host, e.username, e.action,\n           CASE WHEN c.related_event_id = '' OR pa.event_id IS NOT NULL\n                THEN COALESCE(ea.change_id, '') ELSE '' END AS change_id\n    FROM candidates c JOIN events e ON c.event_id = e.event_id\n    LEFT JOIN approved_events ea ON ea.event_id = c.event_id\n    LEFT JOIN approved_events pa ON pa.event_id = c.related_event_id\n)\nSELECT m.rule_id, m.event_id, m.related_event_id, m.event_time, m.host, m.username,\n       m.action, CASE WHEN m.change_id = '' THEN 'investigate' ELSE 'approved_change' END AS disposition,\n       m.change_id, COALESCE(a.criticality, 'unknown') AS criticality,\n       COALESCE(a.owner, 'unknown') AS owner,\n       COALESCE(a.business_function, 'unknown') AS business_function, m.reason\nFROM matched m LEFT JOIN assets a ON m.host = a.host\nORDER BY m.event_time, m.rule_id, m.event_id, m.related_event_id",
+        "StatementType": "DML",
+        "ResultConfiguration": {
+            "OutputLocation": "s3://distribution-soc-lab-labbucket-fnqnlltzhf3e/athena-results/a88756ba-6617-4684-b9a0-75c854b63c8e.csv",
+            "EncryptionConfiguration": {
+                "EncryptionOption": "SSE_S3"
+            },
+            "ExpectedBucketOwner": "699061129959"
+        },
+        "ResultReuseConfiguration": {
+            "ResultReuseByAgeConfiguration": {
+                "Enabled": false
+            }
+        },
+        "QueryExecutionContext": {
+            "Database": "distribution_soc_lab",
+            "Catalog": "awsdatacatalog"
+        },
+        "Status": {
+            "State": "SUCCEEDED",
+            "SubmissionDateTime": "2026-09-07T07:01:21.456000+00:00",
+            "CompletionDateTime": "2026-09-07T07:01:23.359000+00:00"
+        },
+        "Statistics": {
+            "EngineExecutionTimeInMillis": 1657,
+            "DataScannedInBytes": 22971,
+            "TotalExecutionTimeInMillis": 1903,
+            "QueryQueueTimeInMillis": 95,
+            "ServicePreProcessingTimeInMillis": 104,
+            "QueryPlanningTimeInMillis": 925,
+            "ServiceProcessingTimeInMillis": 47,
+            "ResultReuseInformation": {
+                "ReusedPreviousResult": false
+            }
+        },
+        "WorkGroup": "distribution-soc-lab-queries",
+        "EngineVersion": {
+            "SelectedEngineVersion": "Athena engine version 3",
+            "EffectiveEngineVersion": "Athena engine version 3"
+        },
+        "SubstatementType": "SELECT"
+    }
+}

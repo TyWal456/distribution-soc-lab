@@ -1,0 +1,38 @@
+LOCAL VERIFICATION - 2026-09-07
+Python 3.12.13 / Linux
+
+Command: python3 lab.py
+Reviewed 9 events: 6 candidates, 3 alerts, 3 approved candidates.
+Open: /workspace/scratch/c41057bae1a2/distribution-soc-lab/reports/report.html
+Execution: local SQLite. AWS/Athena not executed.
+
+Command: python3 -m unittest discover -s tests -v
+test_change_scope_is_exact (test_lab.LabTests.test_change_scope_is_exact) ... ok
+test_cli_failure_preserves_prior_report (test_lab.LabTests.test_cli_failure_preserves_prior_report) ... ok
+test_correlation_boundary (test_lab.LabTests.test_correlation_boundary) ... ok
+test_empty_dataset (test_lab.LabTests.test_empty_dataset) ... ok
+test_expired_change_not_suppressed (test_lab.LabTests.test_expired_change_not_suppressed) ... ok
+test_fixture_roundtrip (test_lab.LabTests.test_fixture_roundtrip) ... ok
+test_loader_rejects_duplicate_ids (test_lab.LabTests.test_loader_rejects_duplicate_ids) ... ok
+test_loader_rejects_invalid_values (test_lab.LabTests.test_loader_rejects_invalid_values) ... ok
+test_no_cross_host_or_user_correlation (test_lab.LabTests.test_no_cross_host_or_user_correlation) ... ok
+test_overlapping_approvals_do_not_duplicate_candidates (test_lab.LabTests.test_overlapping_approvals_do_not_duplicate_candidates) ... ok
+test_process_approval_required_for_correlated_suppression (test_lab.LabTests.test_process_approval_required_for_correlated_suppression) ... ok
+test_report_escapes_untrusted_content (test_lab.LabTests.test_report_escapes_untrusted_content) ... ok
+test_sample_expectations (test_lab.LabTests.test_sample_expectations) ... ok
+test_shuffled_input_preserves_output (test_lab.LabTests.test_shuffled_input_preserves_output) ... ok
+test_transfer_threshold_and_blocked_action (test_lab.LabTests.test_transfer_threshold_and_blocked_action) ... ok
+test_unknown_asset_retained (test_lab.LabTests.test_unknown_asset_retained) ... ok
+
+----------------------------------------------------------------------
+Ran 16 tests in 0.074s
+
+OK
+
+Infrastructure JSON parsed; all Glue column names/types match local schemas.
+This is a static consistency check, not CloudFormation service validation.
+
+AWS resources: NOT deployed. Athena queries: NOT executed in AWS.
+HTML report: generated and covered by escaping tests; browser visual inspection
+was unavailable because this environment lacks an installed browser executable.
+Windows and macOS: not separately tested.

@@ -1,0 +1,468 @@
+{
+    "ResultSet": {
+        "Rows": [
+            {
+                "Data": [
+                    {
+                        "VarCharValue": "rule_id"
+                    },
+                    {
+                        "VarCharValue": "event_id"
+                    },
+                    {
+                        "VarCharValue": "related_event_id"
+                    },
+                    {
+                        "VarCharValue": "event_time"
+                    },
+                    {
+                        "VarCharValue": "host"
+                    },
+                    {
+                        "VarCharValue": "username"
+                    },
+                    {
+                        "VarCharValue": "action"
+                    },
+                    {
+                        "VarCharValue": "disposition"
+                    },
+                    {
+                        "VarCharValue": "change_id"
+                    },
+                    {
+                        "VarCharValue": "criticality"
+                    },
+                    {
+                        "VarCharValue": "owner"
+                    },
+                    {
+                        "VarCharValue": "business_function"
+                    },
+                    {
+                        "VarCharValue": "reason"
+                    }
+                ]
+            },
+            {
+                "Data": [
+                    {
+                        "VarCharValue": "SOC-001"
+                    },
+                    {
+                        "VarCharValue": "S01"
+                    },
+                    {
+                        "VarCharValue": ""
+                    },
+                    {
+                        "VarCharValue": "2026-09-07T09:00:00Z"
+                    },
+                    {
+                        "VarCharValue": "warehouse-pc-01"
+                    },
+                    {
+                        "VarCharValue": "alice"
+                    },
+                    {
+                        "VarCharValue": "started"
+                    },
+                    {
+                        "VarCharValue": "investigate"
+                    },
+                    {
+                        "VarCharValue": ""
+                    },
+                    {
+                        "VarCharValue": "high"
+                    },
+                    {
+                        "VarCharValue": "Distribution Operations"
+                    },
+                    {
+                        "VarCharValue": "Dispatch workstation"
+                    },
+                    {
+                        "VarCharValue": "PowerShell with an encoded-command flag; inspect content and context"
+                    }
+                ]
+            },
+            {
+                "Data": [
+                    {
+                        "VarCharValue": "SOC-002"
+                    },
+                    {
+                        "VarCharValue": "S02"
+                    },
+                    {
+                        "VarCharValue": ""
+                    },
+                    {
+                        "VarCharValue": "2026-09-07T09:02:00Z"
+                    },
+                    {
+                        "VarCharValue": "warehouse-pc-01"
+                    },
+                    {
+                        "VarCharValue": "alice"
+                    },
+                    {
+                        "VarCharValue": "allowed"
+                    },
+                    {
+                        "VarCharValue": "investigate"
+                    },
+                    {
+                        "VarCharValue": ""
+                    },
+                    {
+                        "VarCharValue": "high"
+                    },
+                    {
+                        "VarCharValue": "Distribution Operations"
+                    },
+                    {
+                        "VarCharValue": "Dispatch workstation"
+                    },
+                    {
+                        "VarCharValue": "Allowed external transfer of at least 5000000 bytes in one event; validate destination and purpose"
+                    }
+                ]
+            },
+            {
+                "Data": [
+                    {
+                        "VarCharValue": "SOC-003"
+                    },
+                    {
+                        "VarCharValue": "S03"
+                    },
+                    {
+                        "VarCharValue": "S01"
+                    },
+                    {
+                        "VarCharValue": "2026-09-07T09:04:00Z"
+                    },
+                    {
+                        "VarCharValue": "warehouse-pc-01"
+                    },
+                    {
+                        "VarCharValue": "alice"
+                    },
+                    {
+                        "VarCharValue": "blocked"
+                    },
+                    {
+                        "VarCharValue": "investigate"
+                    },
+                    {
+                        "VarCharValue": ""
+                    },
+                    {
+                        "VarCharValue": "high"
+                    },
+                    {
+                        "VarCharValue": "Distribution Operations"
+                    },
+                    {
+                        "VarCharValue": "Dispatch workstation"
+                    },
+                    {
+                        "VarCharValue": "Restricted OT network attempt within 10 minutes of encoded PowerShell on the same host and user"
+                    }
+                ]
+            },
+            {
+                "Data": [
+                    {
+                        "VarCharValue": "SOC-001"
+                    },
+                    {
+                        "VarCharValue": "M01"
+                    },
+                    {
+                        "VarCharValue": ""
+                    },
+                    {
+                        "VarCharValue": "2026-09-07T10:00:00Z"
+                    },
+                    {
+                        "VarCharValue": "maintenance-pc-01"
+                    },
+                    {
+                        "VarCharValue": "maint_admin"
+                    },
+                    {
+                        "VarCharValue": "started"
+                    },
+                    {
+                        "VarCharValue": "approved_change"
+                    },
+                    {
+                        "VarCharValue": "CHG-100-1"
+                    },
+                    {
+                        "VarCharValue": "high"
+                    },
+                    {
+                        "VarCharValue": "OT Maintenance"
+                    },
+                    {
+                        "VarCharValue": "Approved maintenance jump workstation"
+                    },
+                    {
+                        "VarCharValue": "PowerShell with an encoded-command flag; inspect content and context"
+                    }
+                ]
+            },
+            {
+                "Data": [
+                    {
+                        "VarCharValue": "SOC-002"
+                    },
+                    {
+                        "VarCharValue": "M02"
+                    },
+                    {
+                        "VarCharValue": ""
+                    },
+                    {
+                        "VarCharValue": "2026-09-07T10:02:00Z"
+                    },
+                    {
+                        "VarCharValue": "maintenance-pc-01"
+                    },
+                    {
+                        "VarCharValue": "maint_admin"
+                    },
+                    {
+                        "VarCharValue": "allowed"
+                    },
+                    {
+                        "VarCharValue": "approved_change"
+                    },
+                    {
+                        "VarCharValue": "CHG-100-2"
+                    },
+                    {
+                        "VarCharValue": "high"
+                    },
+                    {
+                        "VarCharValue": "OT Maintenance"
+                    },
+                    {
+                        "VarCharValue": "Approved maintenance jump workstation"
+                    },
+                    {
+                        "VarCharValue": "Allowed external transfer of at least 5000000 bytes in one event; validate destination and purpose"
+                    }
+                ]
+            },
+            {
+                "Data": [
+                    {
+                        "VarCharValue": "SOC-003"
+                    },
+                    {
+                        "VarCharValue": "M03"
+                    },
+                    {
+                        "VarCharValue": "M01"
+                    },
+                    {
+                        "VarCharValue": "2026-09-07T10:04:00Z"
+                    },
+                    {
+                        "VarCharValue": "maintenance-pc-01"
+                    },
+                    {
+                        "VarCharValue": "maint_admin"
+                    },
+                    {
+                        "VarCharValue": "allowed"
+                    },
+                    {
+                        "VarCharValue": "approved_change"
+                    },
+                    {
+                        "VarCharValue": "CHG-100-3"
+                    },
+                    {
+                        "VarCharValue": "high"
+                    },
+                    {
+                        "VarCharValue": "OT Maintenance"
+                    },
+                    {
+                        "VarCharValue": "Approved maintenance jump workstation"
+                    },
+                    {
+                        "VarCharValue": "Restricted OT network attempt within 10 minutes of encoded PowerShell on the same host and user"
+                    }
+                ]
+            }
+        ],
+        "ResultSetMetadata": {
+            "ColumnInfo": [
+                {
+                    "CatalogName": "hive",
+                    "SchemaName": "",
+                    "TableName": "",
+                    "Name": "rule_id",
+                    "Label": "rule_id",
+                    "Type": "varchar",
+                    "Precision": 7,
+                    "Scale": 0,
+                    "Nullable": "UNKNOWN",
+                    "CaseSensitive": true
+                },
+                {
+                    "CatalogName": "hive",
+                    "SchemaName": "",
+                    "TableName": "",
+                    "Name": "event_id",
+                    "Label": "event_id",
+                    "Type": "varchar",
+                    "Precision": 2147483647,
+                    "Scale": 0,
+                    "Nullable": "UNKNOWN",
+                    "CaseSensitive": true
+                },
+                {
+                    "CatalogName": "hive",
+                    "SchemaName": "",
+                    "TableName": "",
+                    "Name": "related_event_id",
+                    "Label": "related_event_id",
+                    "Type": "varchar",
+                    "Precision": 2147483647,
+                    "Scale": 0,
+                    "Nullable": "UNKNOWN",
+                    "CaseSensitive": true
+                },
+                {
+                    "CatalogName": "hive",
+                    "SchemaName": "",
+                    "TableName": "",
+                    "Name": "event_time",
+                    "Label": "event_time",
+                    "Type": "varchar",
+                    "Precision": 2147483647,
+                    "Scale": 0,
+                    "Nullable": "UNKNOWN",
+                    "CaseSensitive": true
+                },
+                {
+                    "CatalogName": "hive",
+                    "SchemaName": "",
+                    "TableName": "",
+                    "Name": "host",
+                    "Label": "host",
+                    "Type": "varchar",
+                    "Precision": 2147483647,
+                    "Scale": 0,
+                    "Nullable": "UNKNOWN",
+                    "CaseSensitive": true
+                },
+                {
+                    "CatalogName": "hive",
+                    "SchemaName": "",
+                    "TableName": "",
+                    "Name": "username",
+                    "Label": "username",
+                    "Type": "varchar",
+                    "Precision": 2147483647,
+                    "Scale": 0,
+                    "Nullable": "UNKNOWN",
+                    "CaseSensitive": true
+                },
+                {
+                    "CatalogName": "hive",
+                    "SchemaName": "",
+                    "TableName": "",
+                    "Name": "action",
+                    "Label": "action",
+                    "Type": "varchar",
+                    "Precision": 2147483647,
+                    "Scale": 0,
+                    "Nullable": "UNKNOWN",
+                    "CaseSensitive": true
+                },
+                {
+                    "CatalogName": "hive",
+                    "SchemaName": "",
+                    "TableName": "",
+                    "Name": "disposition",
+                    "Label": "disposition",
+                    "Type": "varchar",
+                    "Precision": 15,
+                    "Scale": 0,
+                    "Nullable": "UNKNOWN",
+                    "CaseSensitive": true
+                },
+                {
+                    "CatalogName": "hive",
+                    "SchemaName": "",
+                    "TableName": "",
+                    "Name": "change_id",
+                    "Label": "change_id",
+                    "Type": "varchar",
+                    "Precision": 2147483647,
+                    "Scale": 0,
+                    "Nullable": "UNKNOWN",
+                    "CaseSensitive": true
+                },
+                {
+                    "CatalogName": "hive",
+                    "SchemaName": "",
+                    "TableName": "",
+                    "Name": "criticality",
+                    "Label": "criticality",
+                    "Type": "varchar",
+                    "Precision": 2147483647,
+                    "Scale": 0,
+                    "Nullable": "UNKNOWN",
+                    "CaseSensitive": true
+                },
+                {
+                    "CatalogName": "hive",
+                    "SchemaName": "",
+                    "TableName": "",
+                    "Name": "owner",
+                    "Label": "owner",
+                    "Type": "varchar",
+                    "Precision": 2147483647,
+                    "Scale": 0,
+                    "Nullable": "UNKNOWN",
+                    "CaseSensitive": true
+                },
+                {
+                    "CatalogName": "hive",
+                    "SchemaName": "",
+                    "TableName": "",
+                    "Name": "business_function",
+                    "Label": "business_function",
+                    "Type": "varchar",
+                    "Precision": 2147483647,
+                    "Scale": 0,
+                    "Nullable": "UNKNOWN",
+                    "CaseSensitive": true
+                },
+                {
+                    "CatalogName": "hive",
+                    "SchemaName": "",
+                    "TableName": "",
+                    "Name": "reason",
+                    "Label": "reason",
+                    "Type": "varchar",
+                    "Precision": 98,
+                    "Scale": 0,
+                    "Nullable": "UNKNOWN",
+                    "CaseSensitive": true
+                }
+            ]
+        }
+    },
+    "UpdateCount": 0
+}

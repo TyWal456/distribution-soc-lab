@@ -1,0 +1,7 @@
+rule_id,event_id,related_event_id,event_time,host,username,action,disposition,change_id,criticality,owner,business_function,reason
+SOC-001,S01,,2026-09-07T09:00:00Z,warehouse-pc-01,alice,started,investigate,,high,Distribution Operations,Dispatch workstation,PowerShell with an encoded-command flag; inspect content and context
+SOC-002,S02,,2026-09-07T09:02:00Z,warehouse-pc-01,alice,allowed,investigate,,high,Distribution Operations,Dispatch workstation,Allowed external transfer of at least 5000000 bytes in one event; validate destination and purpose
+SOC-003,S03,S01,2026-09-07T09:04:00Z,warehouse-pc-01,alice,blocked,investigate,,high,Distribution Operations,Dispatch workstation,Restricted OT network attempt within 10 minutes of encoded PowerShell on the same host and user
+SOC-001,M01,,2026-09-07T10:00:00Z,maintenance-pc-01,maint_admin,started,approved_change,CHG-100-1,high,OT Maintenance,Approved maintenance jump workstation,PowerShell with an encoded-command flag; inspect content and context
+SOC-002,M02,,2026-09-07T10:02:00Z,maintenance-pc-01,maint_admin,allowed,approved_change,CHG-100-2,high,OT Maintenance,Approved maintenance jump workstation,Allowed external transfer of at least 5000000 bytes in one event; validate destination and purpose
+SOC-003,M03,M01,2026-09-07T10:04:00Z,maintenance-pc-01,maint_admin,allowed,approved_change,CHG-100-3,high,OT Maintenance,Approved maintenance jump workstation,Restricted OT network attempt within 10 minutes of encoded PowerShell on the same host and user

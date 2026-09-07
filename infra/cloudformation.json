@@ -1,0 +1,358 @@
+{
+  "AWSTemplateFormatVersion": "2010-09-09",
+  "Description": "Distribution SOC lab: S3, Glue catalog, Athena. No IAM users, keys, compute, or external notifications.",
+  "Parameters": {
+    "DatabaseName": {
+      "Type": "String",
+      "Default": "distribution_soc_lab",
+      "AllowedPattern": "[a-z][a-z0-9_]{0,63}",
+      "Description": "Unique Glue database name in this account and region"
+    }
+  },
+  "Resources": {
+    "LabBucket": {
+      "Type": "AWS::S3::Bucket",
+      "DeletionPolicy": "Retain",
+      "UpdateReplacePolicy": "Retain",
+      "Properties": {
+        "PublicAccessBlockConfiguration": {
+          "BlockPublicAcls": true,
+          "BlockPublicPolicy": true,
+          "IgnorePublicAcls": true,
+          "RestrictPublicBuckets": true
+        },
+        "OwnershipControls": {
+          "Rules": [
+            {
+              "ObjectOwnership": "BucketOwnerEnforced"
+            }
+          ]
+        },
+        "BucketEncryption": {
+          "ServerSideEncryptionConfiguration": [
+            {
+              "ServerSideEncryptionByDefault": {
+                "SSEAlgorithm": "AES256"
+              }
+            }
+          ]
+        },
+        "LifecycleConfiguration": {
+          "Rules": [
+            {
+              "Id": "ExpireLabData",
+              "Status": "Enabled",
+              "ExpirationInDays": 14,
+              "AbortIncompleteMultipartUpload": {
+                "DaysAfterInitiation": 1
+              }
+            }
+          ]
+        },
+        "Tags": [
+          {
+            "Key": "Project",
+            "Value": "distribution-soc-lab"
+          }
+        ]
+      }
+    },
+    "BucketPolicy": {
+      "Type": "AWS::S3::BucketPolicy",
+      "Properties": {
+        "Bucket": {
+          "Ref": "LabBucket"
+        },
+        "PolicyDocument": {
+          "Version": "2012-10-17",
+          "Statement": [
+            {
+              "Effect": "Deny",
+              "Principal": "*",
+              "Action": "s3:*",
+              "Resource": [
+                {
+                  "Fn::Sub": "${LabBucket.Arn}"
+                },
+                {
+                  "Fn::Sub": "${LabBucket.Arn}/*"
+                }
+              ],
+              "Condition": {
+                "Bool": {
+                  "aws:SecureTransport": "false"
+                }
+              }
+            }
+          ]
+        }
+      }
+    },
+    "LabDatabase": {
+      "Type": "AWS::Glue::Database",
+      "Properties": {
+        "CatalogId": {
+          "Ref": "AWS::AccountId"
+        },
+        "DatabaseInput": {
+          "Name": {
+            "Ref": "DatabaseName"
+          },
+          "Description": "Synthetic distribution SOC portfolio lab"
+        }
+      }
+    },
+    "LabWorkGroup": {
+      "Type": "AWS::Athena::WorkGroup",
+      "Properties": {
+        "Name": {
+          "Fn::Sub": "${AWS::StackName}-queries"
+        },
+        "RecursiveDeleteOption": true,
+        "Description": "Synthetic lab: 10 MiB per-query scan cutoff; this is not a spending cap",
+        "WorkGroupConfiguration": {
+          "EnforceWorkGroupConfiguration": true,
+          "PublishCloudWatchMetricsEnabled": false,
+          "BytesScannedCutoffPerQuery": 10485760,
+          "EngineVersion": {
+            "SelectedEngineVersion": "Athena engine version 3"
+          },
+          "ResultConfiguration": {
+            "OutputLocation": {
+              "Fn::Sub": "s3://${LabBucket}/athena-results/"
+            },
+            "EncryptionConfiguration": {
+              "EncryptionOption": "SSE_S3"
+            },
+            "ExpectedBucketOwner": {
+              "Ref": "AWS::AccountId"
+            }
+          }
+        }
+      }
+    },
+    "EventsTable": {
+      "Type": "AWS::Glue::Table",
+      "Properties": {
+        "CatalogId": {
+          "Ref": "AWS::AccountId"
+        },
+        "DatabaseName": {
+          "Ref": "LabDatabase"
+        },
+        "TableInput": {
+          "Name": "events",
+          "TableType": "EXTERNAL_TABLE",
+          "Parameters": {
+            "classification": "json"
+          },
+          "StorageDescriptor": {
+            "Columns": [
+              {
+                "Name": "event_id",
+                "Type": "string"
+              },
+              {
+                "Name": "event_time",
+                "Type": "string"
+              },
+              {
+                "Name": "event_epoch",
+                "Type": "bigint"
+              },
+              {
+                "Name": "host",
+                "Type": "string"
+              },
+              {
+                "Name": "username",
+                "Type": "string"
+              },
+              {
+                "Name": "event_type",
+                "Type": "string"
+              },
+              {
+                "Name": "process_name",
+                "Type": "string"
+              },
+              {
+                "Name": "command_line",
+                "Type": "string"
+              },
+              {
+                "Name": "dest_ip",
+                "Type": "string"
+              },
+              {
+                "Name": "dest_zone",
+                "Type": "string"
+              },
+              {
+                "Name": "dest_port",
+                "Type": "bigint"
+              },
+              {
+                "Name": "action",
+                "Type": "string"
+              },
+              {
+                "Name": "bytes_sent",
+                "Type": "bigint"
+              }
+            ],
+            "Location": {
+              "Fn::Sub": "s3://${LabBucket}/data/events/"
+            },
+            "InputFormat": "org.apache.hadoop.mapred.TextInputFormat",
+            "OutputFormat": "org.apache.hadoop.hive.ql.io.HiveIgnoreKeyTextOutputFormat",
+            "SerdeInfo": {
+              "SerializationLibrary": "org.apache.hive.hcatalog.data.JsonSerDe"
+            }
+          }
+        }
+      }
+    },
+    "AssetsTable": {
+      "Type": "AWS::Glue::Table",
+      "Properties": {
+        "CatalogId": {
+          "Ref": "AWS::AccountId"
+        },
+        "DatabaseName": {
+          "Ref": "LabDatabase"
+        },
+        "TableInput": {
+          "Name": "assets",
+          "TableType": "EXTERNAL_TABLE",
+          "Parameters": {
+            "classification": "json"
+          },
+          "StorageDescriptor": {
+            "Columns": [
+              {
+                "Name": "host",
+                "Type": "string"
+              },
+              {
+                "Name": "owner",
+                "Type": "string"
+              },
+              {
+                "Name": "business_function",
+                "Type": "string"
+              },
+              {
+                "Name": "criticality",
+                "Type": "string"
+              }
+            ],
+            "Location": {
+              "Fn::Sub": "s3://${LabBucket}/data/assets/"
+            },
+            "InputFormat": "org.apache.hadoop.mapred.TextInputFormat",
+            "OutputFormat": "org.apache.hadoop.hive.ql.io.HiveIgnoreKeyTextOutputFormat",
+            "SerdeInfo": {
+              "SerializationLibrary": "org.apache.hive.hcatalog.data.JsonSerDe"
+            }
+          }
+        }
+      }
+    },
+    "ChangesTable": {
+      "Type": "AWS::Glue::Table",
+      "Properties": {
+        "CatalogId": {
+          "Ref": "AWS::AccountId"
+        },
+        "DatabaseName": {
+          "Ref": "LabDatabase"
+        },
+        "TableInput": {
+          "Name": "changes",
+          "TableType": "EXTERNAL_TABLE",
+          "Parameters": {
+            "classification": "json"
+          },
+          "StorageDescriptor": {
+            "Columns": [
+              {
+                "Name": "change_id",
+                "Type": "string"
+              },
+              {
+                "Name": "host",
+                "Type": "string"
+              },
+              {
+                "Name": "username",
+                "Type": "string"
+              },
+              {
+                "Name": "start_epoch",
+                "Type": "bigint"
+              },
+              {
+                "Name": "end_epoch",
+                "Type": "bigint"
+              },
+              {
+                "Name": "event_type",
+                "Type": "string"
+              },
+              {
+                "Name": "process_name",
+                "Type": "string"
+              },
+              {
+                "Name": "command_line",
+                "Type": "string"
+              },
+              {
+                "Name": "dest_ip",
+                "Type": "string"
+              },
+              {
+                "Name": "dest_zone",
+                "Type": "string"
+              },
+              {
+                "Name": "dest_port",
+                "Type": "bigint"
+              },
+              {
+                "Name": "action",
+                "Type": "string"
+              }
+            ],
+            "Location": {
+              "Fn::Sub": "s3://${LabBucket}/data/changes/"
+            },
+            "InputFormat": "org.apache.hadoop.mapred.TextInputFormat",
+            "OutputFormat": "org.apache.hadoop.hive.ql.io.HiveIgnoreKeyTextOutputFormat",
+            "SerdeInfo": {
+              "SerializationLibrary": "org.apache.hive.hcatalog.data.JsonSerDe"
+            }
+          }
+        }
+      }
+    }
+  },
+  "Outputs": {
+    "BucketName": {
+      "Value": {
+        "Ref": "LabBucket"
+      }
+    },
+    "DatabaseName": {
+      "Value": {
+        "Ref": "LabDatabase"
+      }
+    },
+    "WorkGroupName": {
+      "Value": {
+        "Ref": "LabWorkGroup"
+      }
+    }
+  }
+}

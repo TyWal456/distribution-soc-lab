@@ -1,0 +1,115 @@
+{
+  "generated_at": "2026-09-07T06:50:32.769567+00:00",
+  "execution": "Local SQLite execution; AWS deployment and Athena execution not verified",
+  "dataset": "Fictional educational data; no employer affiliation",
+  "event_count": 9,
+  "candidate_count": 6,
+  "alert_count": 3,
+  "suppressed_count": 3,
+  "detections": [
+    {
+      "rule_id": "SOC-001",
+      "event_id": "S01",
+      "related_event_id": "",
+      "event_time": "2026-09-07T09:00:00Z",
+      "host": "warehouse-pc-01",
+      "username": "alice",
+      "action": "started",
+      "disposition": "investigate",
+      "change_id": "",
+      "criticality": "high",
+      "owner": "Distribution Operations",
+      "business_function": "Dispatch workstation",
+      "reason": "PowerShell with an encoded-command flag; inspect content and context"
+    },
+    {
+      "rule_id": "SOC-002",
+      "event_id": "S02",
+      "related_event_id": "",
+      "event_time": "2026-09-07T09:02:00Z",
+      "host": "warehouse-pc-01",
+      "username": "alice",
+      "action": "allowed",
+      "disposition": "investigate",
+      "change_id": "",
+      "criticality": "high",
+      "owner": "Distribution Operations",
+      "business_function": "Dispatch workstation",
+      "reason": "Allowed external transfer of at least 5000000 bytes in one event; validate destination and purpose"
+    },
+    {
+      "rule_id": "SOC-003",
+      "event_id": "S03",
+      "related_event_id": "S01",
+      "event_time": "2026-09-07T09:04:00Z",
+      "host": "warehouse-pc-01",
+      "username": "alice",
+      "action": "blocked",
+      "disposition": "investigate",
+      "change_id": "",
+      "criticality": "high",
+      "owner": "Distribution Operations",
+      "business_function": "Dispatch workstation",
+      "reason": "Restricted OT network attempt within 10 minutes of encoded PowerShell on the same host and user"
+    },
+    {
+      "rule_id": "SOC-001",
+      "event_id": "M01",
+      "related_event_id": "",
+      "event_time": "2026-09-07T10:00:00Z",
+      "host": "maintenance-pc-01",
+      "username": "maint_admin",
+      "action": "started",
+      "disposition": "approved_change",
+      "change_id": "CHG-100-1",
+      "criticality": "high",
+      "owner": "OT Maintenance",
+      "business_function": "Approved maintenance jump workstation",
+      "reason": "PowerShell with an encoded-command flag; inspect content and context"
+    },
+    {
+      "rule_id": "SOC-002",
+      "event_id": "M02",
+      "related_event_id": "",
+      "event_time": "2026-09-07T10:02:00Z",
+      "host": "maintenance-pc-01",
+      "username": "maint_admin",
+      "action": "allowed",
+      "disposition": "approved_change",
+      "change_id": "CHG-100-2",
+      "criticality": "high",
+      "owner": "OT Maintenance",
+      "business_function": "Approved maintenance jump workstation",
+      "reason": "Allowed external transfer of at least 5000000 bytes in one event; validate destination and purpose"
+    },
+    {
+      "rule_id": "SOC-003",
+      "event_id": "M03",
+      "related_event_id": "M01",
+      "event_time": "2026-09-07T10:04:00Z",
+      "host": "maintenance-pc-01",
+      "username": "maint_admin",
+      "action": "allowed",
+      "disposition": "approved_change",
+      "change_id": "CHG-100-3",
+      "criticality": "high",
+      "owner": "OT Maintenance",
+      "business_function": "Approved maintenance jump workstation",
+      "reason": "Restricted OT network attempt within 10 minutes of encoded PowerShell on the same host and user"
+    }
+  ],
+  "table_counts": [
+    {
+      "table_name": "events",
+      "row_count": 9
+    },
+    {
+      "table_name": "assets",
+      "row_count": 3
+    },
+    {
+      "table_name": "changes",
+      "row_count": 3
+    }
+  ]
+}
