@@ -1,16 +1,6 @@
 DISTRIBUTION SOC LAB - AWS / ATHENA EDITION
 Independent educational project. All data is fictional. No affiliation with
-ABARTA Coca-Cola, Coca-Cola, or any employer. Created with AI assistance;
-review, understand, and customize the investigation before using it in interviews.
-
-START HERE - NO AWS ACCOUNT REQUIRED
-1. Extract this entire ZIP.
-2. Open the distribution-soc-lab folder containing lab.py.
-3. Open a terminal in that folder.
-4. Run:
-   python lab.py
-   python -m unittest discover -s tests -v
-5. Open reports/report.html in a browser.
+ABARTA Coca-Cola, Coca-Cola, or any employer. 
 
 On macOS/Linux use python3 if python is unavailable.
 Requires Python 3.10 or later. No pip packages, virtual machines, or paid
